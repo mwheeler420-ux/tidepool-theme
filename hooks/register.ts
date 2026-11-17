@@ -41,10 +41,28 @@ export const register: Register = on => {
     if (unpainted !== undefined) {
       $.ui.toast(unpainted)
     }
+    await $.command.register({
+      name: 'tidepool',
+      description: 'Apply the Tidepool theme again and say whether the app draws it',
+    })
     const set = await $.theme.set(LOOK)
     if (!set.isDrawn) {
       $.ui.status(set.reason)
     }
     return next(e)
+  })
+
+  on('command.run', { command: 'tidepool' }, async $ => {
+    const set = await $.theme.set(LOOK)
+    const unpainted = problems.find(line => line.startsWith("Desktop won't paint"))
+    const lines = [
+      set.isDrawn
+        ? 'Tidepool is applied, and an app that draws themes is attached.'
+        : `Tidepool is applied, but nothing draws it: ${set.reason}`,
+    ]
+    if (unpainted !== undefined) {
+      lines.push(unpainted)
+    }
+    return { text: lines.join('\n') }
   })
 }
