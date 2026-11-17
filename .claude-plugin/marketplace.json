@@ -1,0 +1,5 @@
+{
+  "name": "tidepool-theme",
+  "owner": { "name": "mwheeler420-ux" },
+  "plugins": [{ "name": "tidepool", "source": "./" }]
+}
